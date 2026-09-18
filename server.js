@@ -1,19 +1,21 @@
 const express = require('express');
-const path = require('path');
+const routes = require('./routes');
+const CustomError = require('./utils/customError');
+const errorHandler = require('./middlewares/errorHandler');
 
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.get('/api/products', (req, res) => {
-    res.sendFile(path.join(__dirname, 'VIEW', 'product.html'));
+app.use('/', routes);
+
+app.use((req, res, next) => {
+    const err = new CustomError(`Cannot find ${req.originalUrl} on this server`, 404);
+    next(err);
 });
 
-app.post('/api/products', (req, res) => {
-    console.log(req.body);
-    res.json(req.body);
-});
+app.use(errorHandler);
 
 const PORT = 3000;
 app.listen(PORT, () => {
