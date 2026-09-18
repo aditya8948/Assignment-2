@@ -10,8 +10,9 @@ app.get('/api/products', (req, res) => {
     res.sendFile(path.join(__dirname, 'VIEW', 'product.html'));
 });
 
-app.get('/products', (req, res) => {
-    res.sendFile(path.join(__dirname, 'VIEW', 'product.html'));
+app.post('/api/products', (req, res) => {
+    console.log(req.body);
+    res.json(req.body);
 });
 
 const PORT = 3000;
